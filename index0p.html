@@ -1,0 +1,233 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style0p.css">
+    <link rel="icon" href="images/websiteicon.ico" type="image/x-icon"/>
+    <title>Hels | أدم</title>
+</head>
+<body>
+
+    <header>
+        <a  href="#hels" class="logo">Hles</a>
+        <nav class="navigation">
+            <a href="#AboutMe">About Me</a>
+            <a href="#Games">Games</a>
+            <a href="#Contact">Contact Me</a>
+            <a href="indexAR.html">عربي</a>
+        </nav>
+        <button class="hamburger">
+            <div class="bar"></div>
+
+        </button>
+
+    </header>
+
+    <nav class="mobile-nav">
+        <a href="#AboutMe" class="mobile-navB">About Me</a>
+        <a href="#Games" class="mobile-navB">Games</a>
+        <a href="#Contact" class="mobile-navB">Contact Me</a>
+        <a href="indexAR.html" class="mobile-navB">عربي</a>
+    </nav>
+
+
+    <section class="main" id="Sop">
+        <div>
+            <h2>Welcome to <br><span>Hels Website</span></h2>
+            <h3>Game developer, Programmer, Content creator.</h3>
+            <a href="#AboutMe" class="main-btn">Who am i ? </a>
+            <div class="social-icons">
+                <a target="_blank" href="https://www.tiktok.com/@domazizmax1" class="Icon"><i class="fa-brands fa-tiktok"></i></a>
+                <a target="_blank" href="" class="Icon"><i class="fa-brands fa-instagram"></i></a>
+                <a target="_blank" href="" class="Icon"><i class="fa-brands fa-discord"></i></a>
+                <a target="_blank" href="https://www.youtube.com/channel/UCLgeLfT_roJqSpWdpDL_TYg" class="Icon"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="AboutMe" id="AboutMe">
+        <h2 class="title">About Me</h2>
+
+        <p class="aboutMe-p">Hello guys ! My name is Ahmed, I am a Game developer and Content creator . <br>
+            I made over 10 games and a lot of prototypes, and I got over 150k downloads in all games ! <br>
+            I am a content creator at : <a target="_blank" href="https://www.youtube.com/channel/UCLgeLfT_roJqSpWdpDL_TYg">Adam_Hels</a> and <a target="_blank" href="">Hels</a> .
+        </p>
+
+    </section>
+
+
+    <section class="Games" id="Games">
+
+        <h2 class="title"> My Games </h2>
+
+        <div class="content"> 
+            <h1>Snake Game 
+          
+            </h1>
+            <canvas id="board"></canvas>
+             <script>
+              let blockSize = 25;
+        let total_row = 17;
+        let total_col = 17;
+        let board;
+        let context;
+         
+        let snakeX = blockSize * 5;
+        let snakeY = blockSize * 5;
+        let speedX = 0;
+        let speedY = 0;
+        let snakeBody = [];
+         
+        let foodX;
+        let foodY;
+         
+        let gameOver = false;
+         
+        window.onload = function () {
+            board = document.getElementById("board");
+            board.height = total_row * blockSize;
+            board.width = total_col * blockSize;
+            context = board.getContext("2d");
+         
+            placeFood();
+            document.addEventListener("keyup", changeDirection);  //for movements
+            setInterval(update, 1000 / 10);
+        }
+         
+        function update() {
+            if (gameOver) {
+                return;
+            }
+         
+            context.fillStyle = "black";
+            context.fillRect(0, 0, board.width, board.height);
+         
+            context.fillStyle = "red";
+            context.fillRect(foodX, foodY, blockSize, blockSize);
+         
+            if (snakeX == foodX && snakeY == foodY) {
+                snakeBody.push([foodX, foodY]);
+                placeFood();
+            }
+         
+            for (let i = snakeBody.length - 1; i > 0; i--) {
+                snakeBody[i] = snakeBody[i - 1];
+            }
+            if (snakeBody.length) {
+                snakeBody[0] = [snakeX, snakeY];
+            }
+         
+            context.fillStyle = "white";
+            snakeX += speedX * blockSize;
+            snakeY += speedY * blockSize;
+            context.fillRect(snakeX, snakeY, blockSize, blockSize);
+            for (let i = 0; i < snakeBody.length; i++) {
+                context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+            }
+         
+            if (snakeX < 0 
+                || snakeX > total_col * blockSize 
+                || snakeY < 0 
+                || snakeY > total_row * blockSize) { 
+                 
+                
+                gameOver = true;
+                alert("Game Over");
+            }
+         
+            for (let i = 0; i < snakeBody.length; i++) {
+                if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) { 
+                     
+                    // Snake eats own body
+                    gameOver = true;
+                    alert("Game Over");
+                }
+            }
+        }
+         
+        function changeDirection(e) {
+            if (e.code == "ArrowUp" && speedY != 1) { 
+                speedX = 0;
+                speedY = -1;
+            }
+            else if (e.code == "ArrowDown" && speedY != -1) {
+        
+                speedX = 0;
+                speedY = 1;
+            }
+            else if (e.code == "ArrowLeft" && speedX != 1) {
+        
+                speedX = -1;
+                speedY = 0;
+            }
+            else if (e.code == "ArrowRight" && speedX != -1) { 
+        
+                speedX = 1;
+                speedY = 0;
+            }
+        }
+         
+        
+        
+        function placeFood() {
+         
+        
+            foodX = Math.floor(Math.random() * total_col) * blockSize; 
+             
+        
+            foodY = Math.floor(Math.random() * total_row) * blockSize;}  
+             </script>
+    <section class="Contact" id="Contact">
+
+        <h2 class="title"> Let's Collaborate </h2>
+
+        <div class="content">
+            <div class="C-Card">
+                <div class="gameInfo">
+                    <strong class="Contact-title">
+                        <span><a href="adamsalah" class="__cf_email__" data-cfemail="93e0fce3f5fce1f2f7e0d3f4fef2faffbdf0fcfe">[email&#160;protected]</a></span>
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="footer">
+        <p class="footer-title">Copyrights @ <span>adamahmedsalah</span></p>
+        <div class="social-icons">
+            <a target="_blank" href="https://www.youtube.com/c/Sop_dev" class="Icon"><i class="fa-brands fa-youtube"></i></a>
+            <a target="_blank" href="https://www.tiktok.com/@sop.dev" class="Icon"><i class="fa-brands fa-tiktok"></i></a>
+            <a target="_blank" href="" class="Icon"><i class="fa-brands fa-instagram"></i></a>
+            <a target="_blank" href="" class="Icon"><i class="fa-brands fa-discord"></i></a>
+
+        </div>
+
+    </footer>
+
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+        const menu_btn = document.querySelector('.hamburger');
+        const mobile_menu = document.querySelector('.mobile-nav');
+
+
+
+        menu_btn.addEventListener('click', function () {
+            menu_btn.classList.toggle('is-active')
+            mobile_menu.classList.toggle('is-active')
+        })
+
+        document.querySelectorAll('.mobile-navB').forEach(item => {
+            item.addEventListener('click', event => {
+                menu_btn.classList.toggle('is-active')
+                mobile_menu.classList.toggle('is-active')
+            })
+        })
+
+    </script>
+</body>
+</html>
